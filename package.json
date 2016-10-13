@@ -1,7 +1,7 @@
 {
-  "name": "graphql-superheros",
+  "name": "graphql-blog",
   "version": "1.0.0",
-  "description": "simple Express + GraphQL server",
+  "description": "An Express + GraphQL service",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -16,5 +16,8 @@
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
     "graphql": "^0.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

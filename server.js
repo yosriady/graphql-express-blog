@@ -3,7 +3,7 @@ import graphqlHTTP from 'express-graphql';
 
 import schema from './schema.js';
 
-var app = express();
+const app = express();
 
 app.use('/graphql', graphqlHTTP(req => ({
   schema,

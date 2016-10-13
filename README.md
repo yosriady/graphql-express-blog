@@ -1,6 +1,6 @@
-# graphql-express-example
+# graphql-express-blog
 
-It's an example of sipmle GraphQL server using Node.js and Express.
+An example of a GraphQL service using Node.js and Express.
 
 Have Node `stable` installed, then
 
@@ -10,3 +10,13 @@ npm start
 ```
 
 Then, go to `http://localhost:3000/graphql`
+
+
+## `curl`
+
+```
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"query": "{ posts { title } }"}' \
+http://localhost:3000/graphql
+```
