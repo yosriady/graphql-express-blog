@@ -10,6 +10,30 @@ import {
 
 import db from './db.js';
 
+const Post = new GraphQLObjectType({
+  name: "Post",
+  description: "Represents a blog post",
+  fields: () => ({
+    id: {type: GraphQLInt},
+    title: {type: GraphQLString},
+    url: {type: GraphQLString},
+    body: {type: GraphQLString},
+    votes: {type: GraphQLInt},
+    author: {
+      type: User,
+      resolve: function(post) {
+        return db.getUserById(post.author_id);
+      }
+    },
+    published_at: {
+      type: GraphQLFloat,
+      resolve: function(post) {
+          return new Date(post.published_at).getTime();
+      }
+    }
+  })
+});
+
 const User = new GraphQLObjectType({
   name: 'User',
   description: "Represents the type of an author of a blog post or a comment",
@@ -25,30 +49,6 @@ const User = new GraphQLObjectType({
   }
 });
 
-const Post = new GraphQLObjectType({
-  name: "Post",
-  description: "Represents a blog post",
-  fields: () => ({
-    id: {type: GraphQLInt},
-    title: {type: GraphQLString},
-    url: {type: GraphQLString},
-    body: {type: GraphQLString},
-    votes: {type: GraphQLInt},
-    published_at: {
-      type: GraphQLFloat,
-      resolve: function(post) {
-          return new Date(post.published_at).getTime();
-      }
-    },
-    author: {
-      type: User,
-      resolve: function(post) {
-        return db.getUserById(post.author_id);
-      }
-    }
-  })
-});
-
 const Query = new GraphQLObjectType({
   name: 'BlogSchema',
   description: 'The root of all our queries',
@@ -60,7 +60,7 @@ const Query = new GraphQLObjectType({
       args: {
         limit: {type: GraphQLInt, description: "Limit the posts returned"}
       },
-      resolve: function(posts, args) {
+      resolve: function(_root, args) {
         return db.getPosts(args);
       }
     },
@@ -71,7 +71,7 @@ const Query = new GraphQLObjectType({
       args: {
         id: {type: new GraphQLNonNull(GraphQLInt)}
       },
-      resolve: function(source, {id}) {
+      resolve: function(_root, {id, title}) {
         return db.getPostById(id);
       }
     },
